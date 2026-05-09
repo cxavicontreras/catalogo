@@ -115,7 +115,7 @@ const products = [
     image: pasta,
   },
 ];
-const [darkMode, setDarkMode] = useState(false);
+
 
 function ProductCard({ product }) {
   return (
