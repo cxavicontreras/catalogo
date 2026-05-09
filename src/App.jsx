@@ -117,20 +117,28 @@ const products = [
 ];
 
 
-function ProductCard({ product }) {
+function ProductCard({ product, darkMode }) {
+
+  const mayorPrice = parseInt(product.price.replace(/\D/g, ""));
+  const unitPrice = Math.round(mayorPrice * 1.15);
+
   return (
     <div
-      className="
-      bg-white
+      className={`
       rounded-2xl
       overflow-hidden
       shadow-md
       hover:shadow-xl
       transition-all
       duration-300
-    "
+
+      ${darkMode
+        ? "bg-zinc-900"
+        : "bg-white"}
+    `}
     >
-      <div className="bg-gray-100">
+
+      <div className={darkMode ? "bg-zinc-800" : "bg-gray-100"}>
         <img
           src={product.image}
           alt={product.name}
@@ -140,24 +148,50 @@ function ProductCard({ product }) {
 
       <div className="p-4">
 
-        <h2 className="text-gray-800 font-semibold text-lg line-clamp-2">
+        <h2
+          className={`
+          font-semibold
+          text-lg
+          line-clamp-2
+
+          ${darkMode
+            ? "text-white"
+            : "text-gray-800"}
+        `}
+        >
           {product.name}
         </h2>
 
-        <p className="text-green-600 text-xl font-bold mt-2">
-          {product.price}
-        </p>
+        <div className="mt-3 space-y-1">
+
+          <p className="text-green-500 text-xl font-bold">
+            Mayoreo: Q{mayorPrice}
+          </p>
+
+          <p
+            className={`
+            text-sm
+
+            ${darkMode
+              ? "text-gray-300"
+              : "text-gray-500"}
+          `}
+          >
+            Unidad: Q{unitPrice}
+          </p>
+
+        </div>
 
         <button
           className="
           mt-4
           w-full
-          bg-black
-          hover:bg-zinc-800
-          text-white
+          bg-green-500
+          hover:bg-green-400
+          text-black
           py-2.5
           rounded-xl
-          font-medium
+          font-bold
           transition
         "
         >
@@ -165,23 +199,68 @@ function ProductCard({ product }) {
         </button>
 
       </div>
+
     </div>
   );
 }
+import { useState } from "react";
 export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
   return (
-  <div className="min-h-screen bg-gray-100">
+  <div
+  className={
+    darkMode
+      ? "min-h-screen bg-[#0a0a0a]"
+      : "min-h-screen bg-gray-100"
+  }
+>
       
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      <header
+  className={`
+  sticky top-0 z-50 shadow-sm
+
+  ${darkMode
+    ? "bg-zinc-950"
+    : "bg-white"}
+`}
+>
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
-          <h1 className="text-3xl font-black text-black">
+          <h1
+  className={`
+  text-3xl font-black
+
+  ${darkMode
+    ? "text-white"
+    : "text-black"}
+`}
+>
             NovaShop
           </h1>
 
-          <button className="bg-green-500 hover:bg-green-400 text-black px-5 py-2 rounded-2xl font-bold transition">
-            WhatsApp
-          </button>
+          <div className="flex gap-3">
+
+  <button
+    onClick={() => setDarkMode(!darkMode)}
+    className="
+    bg-zinc-800
+    hover:bg-zinc-700
+    text-white
+    px-4
+    py-2
+    rounded-2xl
+    font-bold
+    transition
+  "
+  >
+    {darkMode ? "☀️" : "🌙"}
+  </button>
+
+  <button className="bg-green-500 hover:bg-green-400 text-black px-5 py-2 rounded-2xl font-bold transition">
+    WhatsApp
+  </button>
+
+</div>
 
         </div>
       </header>
@@ -209,11 +288,27 @@ export default function App() {
         Productos virales
       </p>
 
-      <h1 className="text-5xl md:text-7xl font-black text-black leading-tight">
+      <h1
+  className={`
+  text-3xl font-black
+
+  ${darkMode
+    ? "text-white"
+    : "text-black"}
+`}
+>
         Gadgets y accesorios
       </h1>
 
-      <p className="text-black/80 text-lg mt-6">
+      <p
+  className={`
+  text-lg mt-6
+
+  ${darkMode
+    ? "text-gray-200"
+    : "text-black/80"}
+`}
+>
         Catálogo de productos modernos, útiles y virales.
       </p>
 
@@ -262,9 +357,10 @@ export default function App() {
 
           {products.map((product, index) => (
             <ProductCard
-              key={index}
-              product={product}
-            />
+  key={index}
+  product={product}
+  darkMode={darkMode}
+/>
           ))}
 
         </div>
