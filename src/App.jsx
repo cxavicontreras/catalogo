@@ -115,6 +115,7 @@ const products = [
     image: pasta,
   },
 ];
+const [darkMode, setDarkMode] = useState(false);
 
 function ProductCard({ product }) {
   return (
@@ -175,7 +176,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
           <h1 className="text-3xl font-black text-black">
-            Catálogo
+            NovaShop
           </h1>
 
           <button className="bg-green-500 hover:bg-green-400 text-black px-5 py-2 rounded-2xl font-bold transition">
