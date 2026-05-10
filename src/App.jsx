@@ -516,6 +516,23 @@ export default function App() {
         {
           cart.length > 0 && (
             <button
+            className="
+mt-6
+w-full
+bg-gradient-to-r
+from-green-500
+to-emerald-400
+hover:scale-[1.02]
+hover:shadow-lg
+hover:shadow-green-500/30
+text-black
+py-3
+rounded-2xl
+font-black
+tracking-wide
+transition-all
+duration-300
+"
   onClick={() => {
 
     const message = cart
