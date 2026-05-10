@@ -516,20 +516,20 @@ export default function App() {
         {
           cart.length > 0 && (
             <button
-              className="
-              mt-6
-              w-full
-              bg-green-500
-              hover:bg-green-400
-              text-black
-              py-3
-              rounded-2xl
-              font-bold
-              transition
-            "
-            >
-              Confirmar pedido
-            </button>
+  onClick={() => {
+
+    const message = cart
+      .map((product) => product.name)
+      .join("%0A");
+
+    window.open(
+      `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${message}`,
+      "_blank"
+    );
+  }}
+>
+  Confirmar pedido
+</button>
           )
         }
 
