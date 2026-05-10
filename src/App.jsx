@@ -117,10 +117,10 @@ const products = [
 ];
 
 
-function ProductCard({ product, darkMode }) {
+function ProductCard({ product, darkMode, addToCart }) {
 
   const mayorPrice = parseInt(product.price.replace(/\D/g, ""));
-  const unitPrice = Math.round(mayorPrice * 1.15);
+  const unitPrice = Math.round(mayorPrice * 1.3);
 
   return (
     <div
@@ -183,20 +183,21 @@ function ProductCard({ product, darkMode }) {
         </div>
 
         <button
-          className="
-          mt-4
-          w-full
-          bg-green-500
-          hover:bg-green-400
-          text-black
-          py-2.5
-          rounded-xl
-          font-bold
-          transition
-        "
-        >
-          Comprar
-        </button>
+  onClick={() => addToCart(product)}
+  className="
+  mt-4
+  w-full
+  bg-green-500
+  hover:bg-green-400
+  text-black
+  py-2.5
+  rounded-xl
+  font-bold
+  transition
+"
+>
+  Agregar al carrito
+</button>
 
       </div>
 
@@ -204,8 +205,24 @@ function ProductCard({ product, darkMode }) {
   );
 }
 import { useState } from "react";
+
+
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [cart, setCart] = useState([]);
+  const [openCart, setOpenCart] = useState(false);
+  const addToCart = (product) => {
+  setCart([...cart, product]);
+  };
+  const removeFromCart = (indexToRemove) => {
+  setCart(
+    cart.filter((_, index) => index !== indexToRemove)
+  );
+  };
+  const [search, setSearch] = useState("");
+  const filteredProducts = products.filter((product) =>
+  product.name.toLowerCase().includes(search.toLowerCase())
+);
   return (
   <div
   className={
@@ -240,6 +257,22 @@ export default function App() {
 
           <div className="flex gap-3">
 
+            <button
+              onClick={() => setOpenCart(true)}
+              className="
+            bg-black
+            hover:bg-zinc-800
+            text-white
+              px-4
+              py-2
+              rounded-2xl
+              font-bold
+              transition
+              "
+            >
+            🛒 {cart.length}
+            </button>
+
   <button
     onClick={() => setDarkMode(!darkMode)}
     className="
@@ -256,9 +289,23 @@ export default function App() {
     {darkMode ? "☀️" : "🌙"}
   </button>
 
-  <button className="bg-green-500 hover:bg-green-400 text-black px-5 py-2 rounded-2xl font-bold transition">
-    WhatsApp
-  </button>
+  <a
+  href="https://wa.me/50256981825"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    bg-green-500
+    hover:bg-green-400
+    text-black
+    px-5
+    py-2
+    rounded-2xl
+    font-bold
+    transition
+  "
+>
+  WhatsApp
+</a>
 
 </div>
 
@@ -272,7 +319,7 @@ export default function App() {
         rounded-[40px]
         overflow-hidden
         relative
-        bg-lineal-to-r
+        bg-gradient-to-r
         from-green-500
         via-emerald-400
         to-lime-300
@@ -312,61 +359,185 @@ export default function App() {
         Catálogo de productos modernos, útiles y virales.
       </p>
 
-      <button
-        className="
-        mt-8
-        bg-black
-        text-white
-        px-8
-        py-4
-        rounded-2xl
-        font-bold
-        hover:scale-105
-        transition
-      "
-      >
-        Ver catálogo
-      </button>
-
+      <a
+  href="#catalogo"
+  className="
+  inline-block
+  mt-8
+  bg-black
+  text-white
+  px-8
+  py-4
+  rounded-2xl
+  font-bold
+  hover:scale-105
+  transition
+"
+>
+  Ver catálogo
+</a>
     </div>
 
   </div>
 
 </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-10">
+      <section id="catalogo" className="max-w-7xl mx-auto px-6 py-10"/>
+        <section className="max-w-7xl mx-auto px-6 py-10">
 
         <div className="mb-10">
           <input
-            type="text"
-            placeholder="Buscar producto..."
-            className="
-            w-full
-            bg-white/5
-            backdrop-blur-md
-            border border-white/10
-            rounded-2xl
-            p-4
-            outline-none
-            focus:border-green-500
-          "
-          />
+  type="text"
+  placeholder="Buscar producto..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <ProductCard
   key={index}
   product={product}
   darkMode={darkMode}
+  addToCart={addToCart}
 />
           ))}
 
         </div>
 
       </section>
+      {
+  openCart && (
+    <div
+      className="
+      fixed inset-0
+      bg-black/50
+      flex justify-center items-center
+      z-50
+    "
+    >
 
+      <div
+        className={`
+        w-[90%] max-w-lg
+        rounded-3xl
+        p-6
+        shadow-2xl
+
+        ${darkMode
+          ? "bg-zinc-900 text-white"
+          : "bg-white text-black"}
+      `}
+      >
+
+        <div className="flex justify-between items-center mb-6">
+
+          <h2 className="text-2xl font-black">
+            Carrito
+          </h2>
+
+          <button
+            onClick={() => setOpenCart(false)}
+            className="text-2xl"
+          >
+            ✕
+          </button>
+
+        </div>
+
+        <div className="space-y-4 max-h-[400px] overflow-y-auto">
+
+          {cart.length === 0 ? (
+            <p className="text-center opacity-70">
+              Tu carrito está vacío
+            </p>
+          ) : (
+            cart.map((product, index) => {
+
+              const mayorPrice = parseInt(
+                product.price.replace(/\D/g, "")
+              );
+
+              const unitPrice = Math.round(
+                mayorPrice * 1.15
+              );
+
+              return (
+                <div
+                  key={index}
+                  className="
+                  flex items-center gap-4
+                  border-b border-white/10
+                  pb-4
+                "
+                >
+
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-20 h-20 object-cover rounded-xl"
+                  />
+
+                  <div className="flex-1">
+
+  <h3 className="font-bold">
+    {product.name}
+  </h3>
+
+  <p className="text-green-500">
+    Q{unitPrice}
+  </p>
+
+</div>
+
+<button
+  onClick={() => removeFromCart(index)}
+  className="
+  bg-red-500
+  hover:bg-red-400
+  text-white
+  px-3
+  py-2
+  rounded-xl
+  transition
+"
+>
+  ✕
+</button>
+                </div>
+              );
+            })
+          )}
+
+        </div>
+
+        {
+          cart.length > 0 && (
+            <button
+              className="
+              mt-6
+              w-full
+              bg-green-500
+              hover:bg-green-400
+              text-black
+              py-3
+              rounded-2xl
+              font-bold
+              transition
+            "
+            >
+              Confirmar pedido
+            </button>
+          )
+        }
+
+      </div>
+
+    </div>
+  )
+}
     </div>
   );
 }
