@@ -17,110 +17,173 @@ import huevos from "./assets/huevos.png";
 import cuello from "./assets/cuello.png";
 import astronauta from "./assets/astronauta.png";
 import pasta from "./assets/pasta.png";
+import m19 from "./assets/M19.png";
+import m20 from "./assets/M20.png";
+import m88 from "./assets/M88.png";
+import logo from "./assets/logo.png";
 
 const products = [
   {
     name: "Plancha de Vapor",
-    price: "Desde Q57",
+    wholesalePrice: 70,
+    unitPrice: 75,
     image: plancha,
+    description: "Plancha portátil con vapor continuo y base antiadherente para un planchado rápido y práctico."
   },
   {
     name: "Reflector 3 Focos",
-    price: "Desde Q66",
+    wholesalePrice: 80,
+    unitPrice: 85,
     image: reflector3,
+    description: "Reflector solar de 3 focos con sensor de movimiento y alta iluminación para exteriores."
   },
   {
     name: "Inflador de Globos",
-    price: "Desde Q58",
+    wholesalePrice: 70,
+    unitPrice: 75,
     image: globos,
+    description: "Inflador eléctrico ideal para decorar fiestas y eventos con globos en segundos."
   },
   {
     name: "Audífonos InPods 12",
-    price: "Desde Q24",
+    wholesalePrice: 28,
+    unitPrice: 35,
     image: audifonos,
+    description: "Audífonos inalámbricos compactos con conexión Bluetooth y estuche recargable."
   },
   {
     name: "Cafetera Eléctrica",
-    price: "Desde Q45",
+    wholesalePrice: 52,
+    unitPrice: 60,
     image: cafetera,
+    description: "Cafetera eléctrica de acero inoxidable con calentamiento rápido y diseño moderno."
   },
   {
     name: "Dispensador de Agua",
-    price: "Desde Q17",
+    wholesalePrice: 28,
+    unitPrice: 35,
     image: dispensador,
+    description: "Dispensador eléctrico recargable compatible con garrafones de agua."
   },
   {
     name: "Procesador Eléctrico",
-    price: "Desde Q73",
+    wholesalePrice: 80,
+    unitPrice: 85,
     image: procesador,
+    description: "Procesador eléctrico multifunción ideal para picar verduras, carne y alimentos."
   },
   {
     name: "Báscula Digital",
-    price: "Desde Q24",
+    wholesalePrice: 30,
+    unitPrice: 35,
     image: bascula,
+    description: "Báscula digital compacta con medición precisa en gramos y onzas."
   },
   {
     name: "Banquito Plegable",
-    price: "Desde Q43",
+    wholesalePrice: 50,
+    unitPrice: 55,
     image: banquito,
+    description: "Banquito plegable portátil, resistente y fácil de transportar."
   },
   {
     name: "Molino Eléctrico",
-    price: "Desde Q37",
+    wholesalePrice: 46,
+    unitPrice: 50,
     image: molino,
+    description: "Molino eléctrico compacto perfecto para café, semillas y especias."
   },
   {
     name: "Ventilador 5 en 1",
-    price: "Desde Q42",
+    wholesalePrice: 65,
+    unitPrice: 70,
     image: ventilador5,
+    description: "Ventilador portátil con función de enfriamiento y humidificador integrado."
   },
   {
     name: "Reflector 2 Focos",
-    price: "Desde Q72",
+    wholesalePrice: 90,
+    unitPrice: 99,
     image: reflector2,
+    description: "Reflector solar de 2 focos con sensor de movimiento y batería recargable."
   },
   {
     name: "Base Antideslizante",
-    price: "Desde Q26",
+    wholesalePrice: 30,
+    unitPrice: 35,
     image: base,
+    description: "Base antideslizante para automóvil con soporte para celular y números temporales."
   },
   {
     name: "Vaso con Bocina",
-    price: "Desde Q39",
+    wholesalePrice: 50,
+    unitPrice: 59,
     image: vaso,
+    description: "Vaso térmico con bocina Bluetooth integrada y diseño moderno."
   },
   {
     name: "Luces Navideñas Solar",
-    price: "Desde Q68",
+    wholesalePrice: 80,
+    unitPrice: 90,
     image: luces,
+    description: "Luces solares decorativas de 400 LEDs ideales para jardines y decoración navideña."
   },
   {
     name: "Hervidora de Huevos",
-    price: "Desde Q35",
+    wholesalePrice: 45,
+    unitPrice: 50,
     image: huevos,
+    description: "Hervidora eléctrica con capacidad para cocinar huevos de forma rápida y sencilla."
   },
   {
     name: "Ventilador de Cuello",
-    price: "Desde Q24",
+    wholesalePrice: 35,
+    unitPrice: 40,
     image: cuello,
+    description: "Ventilador portátil para cuello con diseño ergonómico y recargable."
   },
   {
     name: "Astronauta Proyector",
-    price: "Desde Q65",
+    wholesalePrice: 85,
+    unitPrice: 99,
     image: astronauta,
+    description: "Proyector astronauta con luces galaxia, bocina y control remoto."
   },
   {
     name: "Dispensador de Pasta LED",
-    price: "Desde Q27",
+    wholesalePrice: 42,
+    unitPrice: 50,
     image: pasta,
+    description: "Dispensador automático de pasta dental con luz LED y soporte para cepillos."
+  },
+  {
+    name: "Audífonos M19 Simple",
+    wholesalePrice: 70,
+    unitPrice: 75,
+    image: m19,
+    description: "Audífonos inalámbricos M19 con pantalla digital y excelente calidad de sonido."
+  },
+  {
+    name: "Audífonos M20 cancelación de ruido",
+    wholesalePrice: 90,
+    unitPrice: 99,
+    image: m20,
+    description: "Audífonos M20 con cancelación de ruido y estuche con indicador digital."
+  },
+  {
+    name: "Audífonos M88 Plus Power Bank",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: m88,
+    description: "Audífonos M88 Plus con función power bank y batería de larga duración."
   },
 ];
 
 
 function ProductCard({ product, darkMode, addToCart }) {
 
-  const mayorPrice = parseInt(product.price.replace(/\D/g, ""));
-  const unitPrice = Math.round(mayorPrice * 1.3);
+  const mayorPrice = product.wholesalePrice;
+const unitPrice = product.unitPrice;
 
   return (
     <div
@@ -148,39 +211,52 @@ function ProductCard({ product, darkMode, addToCart }) {
 
       <div className="p-4">
 
-        <h2
-          className={`
-          font-semibold
-          text-lg
-          line-clamp-2
+  <h2
+    className={`
+      font-semibold
+      text-lg
+      line-clamp-2
 
-          ${darkMode
-            ? "text-white"
-            : "text-gray-800"}
-        `}
-        >
-          {product.name}
-        </h2>
+      ${darkMode
+        ? "text-white"
+        : "text-gray-800"}
+    `}
+  >
+    {product.name}
+  </h2>
 
-        <div className="mt-3 space-y-1">
+  <p
+    className={`
+      text-sm mt-2
 
-          <p className="text-green-500 text-xl font-bold">
-            Mayoreo: Q{mayorPrice}
-          </p>
+      ${darkMode
+        ? "text-gray-400"
+        : "text-gray-600"}
+    `}
+  >
+    {product.description}
+  </p>
 
-          <p
-            className={`
-            text-sm
+  <div className="mt-3 space-y-1">
 
-            ${darkMode
-              ? "text-gray-300"
-              : "text-gray-500"}
-          `}
-          >
-            Unidad: Q{unitPrice}
-          </p>
+    <p className="text-green-500 text-xl font-bold">
+      A partir de 3: Q{mayorPrice} C/U
+    </p>
 
-        </div>
+    <p
+      className={`
+        text-sm
+
+        ${darkMode
+          ? "text-gray-300"
+          : "text-gray-500"}
+      `}
+    >
+      Unidad: Q{unitPrice}
+    </p>
+
+  </div>
+
 
         <button
   onClick={() => addToCart(product)}
@@ -212,16 +288,60 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [openCart, setOpenCart] = useState(false);
   const addToCart = (product) => {
-  setCart([...cart, product]);
-  };
-  const removeFromCart = (indexToRemove) => {
-  setCart(
-    cart.filter((_, index) => index !== indexToRemove)
+
+  const existingProduct = cart.find(
+    (item) => item.name === product.name
   );
-  };
+
+  if (existingProduct) {
+
+    setCart(
+      cart.map((item) =>
+        item.name === product.name
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
+          : item
+      )
+    );
+
+  } else {
+
+    setCart([
+      ...cart,
+      {
+        ...product,
+        quantity: 1,
+      },
+    ]);
+
+  }
+};
+  const removeFromCart = (indexToRemove) => {
+
+  const updatedCart = [...cart];
+
+  if (updatedCart[indexToRemove].quantity > 1) {
+
+    updatedCart[indexToRemove].quantity -= 1;
+
+  } else {
+
+    updatedCart.splice(indexToRemove, 1);
+
+  }
+
+  setCart(updatedCart);
+};
   const [search, setSearch] = useState("");
   const filteredProducts = products.filter((product) =>
   product.name.toLowerCase().includes(search.toLowerCase())
+);
+  const total = cart.reduce(
+  (acc, product) =>
+    acc + (product.unitPrice * product.quantity),
+  0
 );
   return (
   <div
@@ -243,17 +363,27 @@ export default function App() {
 >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
-          <h1
-  className={`
-  text-3xl font-black
+          <div className="flex items-center gap-3">
 
-  ${darkMode
-    ? "text-white"
-    : "text-black"}
-`}
->
-            NovaShop
-          </h1>
+  <img
+    src={logo}
+    alt="NovaShop"
+    className="w-12 h-12 rounded-2xl"
+  />
+
+  <h1
+    className={`
+    text-2xl font-black tracking-wide
+
+    ${darkMode
+      ? "text-white"
+      : "text-black"}
+  `}
+  >
+    NovaShop
+  </h1>
+
+</div>
 
           <div className="flex gap-3">
 
@@ -456,13 +586,8 @@ export default function App() {
           ) : (
             cart.map((product, index) => {
 
-              const mayorPrice = parseInt(
-                product.price.replace(/\D/g, "")
-              );
-
-              const unitPrice = Math.round(
-                mayorPrice * 1.15
-              );
+              const mayorPrice = product.wholesalePrice;
+              const unitPrice = product.unitPrice;
 
               return (
                 <div
@@ -487,7 +612,10 @@ export default function App() {
   </h3>
 
   <p className="text-green-500">
-    Q{unitPrice}
+    Q{product.unitPrice} x {product.quantity}
+  </p>
+  <p className="text-sm opacity-70">
+    Subtotal: Q{product.unitPrice * product.quantity}
   </p>
 
 </div>
@@ -512,9 +640,29 @@ export default function App() {
           )}
 
         </div>
+        <div
+  className="
+  mt-6
+  flex justify-between items-center
+  border-t border-white/10
+  pt-4
+"
+>
+
+  <span className="text-lg font-bold">
+    Total:
+  </span>
+
+  <span className="text-2xl font-black text-green-500">
+    Q{total}
+  </span>
+
+</div>
 
         {
           cart.length > 0 && (
+            
+            
             <button
             className="
 mt-6
@@ -536,17 +684,27 @@ duration-300
   onClick={() => {
 
     const message = cart
-      .map((product) => product.name)
-      .join("%0A");
+  .map(
+    (product) =>
+      `${product.name} x${product.quantity} - Q${
+        product.unitPrice * product.quantity
+      }`
+  )
+  .join("%0A");
+  const finalMessage =
+  `${message}%0A%0ATotal: Q${total}`;
 
     window.open(
-      `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${message}`,
-      "_blank"
-    );
+  `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${finalMessage}`,
+  "_blank"
+);
+    
   }}
+  
 >
   Confirmar pedido
 </button>
+
           )
         }
 
