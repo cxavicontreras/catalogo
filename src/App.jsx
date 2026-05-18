@@ -377,7 +377,16 @@ export default function App() {
 });
   const [openCart, setOpenCart] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+
+  const savedFavorites =
+    localStorage.getItem("favorites");
+
+  return savedFavorites
+    ? JSON.parse(savedFavorites)
+    : [];
+
+});
   const addToCart = (product) => {
 
   const existingProduct = cart.find(
@@ -457,6 +466,15 @@ const decreaseQuantity = (productName) => {
 
 }, [cart]);
 
+useEffect(() => {
+
+  localStorage.setItem(
+    "favorites",
+    JSON.stringify(favorites)
+  );
+
+}, [favorites]);
+
 const toggleFavorite = (productName) => {
 
   if (favorites.includes(productName)) {
@@ -499,9 +517,44 @@ const cartCount = cart.reduce(
   0
 );
   const [search, setSearch] = useState("");
-  const filteredProducts = products.filter((product) =>
-  product.name.toLowerCase().includes(search.toLowerCase())
-);
+  const [filter, setFilter] = useState("all");
+  const filteredProducts = products.filter((product) => {
+
+  const matchesSearch =
+    product.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+  if (filter === "favorites") {
+
+    return (
+      matchesSearch &&
+      favorites.includes(product.name)
+    );
+
+  }
+
+  if (filter === "cheap") {
+
+    return (
+      matchesSearch &&
+      product.unitPrice <= 50
+    );
+
+  }
+
+  if (filter === "expensive") {
+
+    return (
+      matchesSearch &&
+      product.unitPrice > 50
+    );
+
+  }
+
+  return matchesSearch;
+
+});
   const total = cart.reduce((acc, product) => {
 
   const price =
@@ -680,6 +733,85 @@ const cartCount = cart.reduce(
 
         
           <div className="mb-10 relative">
+            <div className="flex flex-wrap gap-3 mb-8">
+
+  <button
+    onClick={() => setFilter("all")}
+    className={`
+      px-4
+      py-2
+      rounded-xl
+      font-bold
+      transition
+
+      ${filter === "all"
+        ? "bg-green-500 text-black"
+        : darkMode
+          ? "bg-zinc-800 text-white"
+          : "bg-white text-black"}
+    `}
+  >
+    Todos
+  </button>
+
+  <button
+    onClick={() => setFilter("favorites")}
+    className={`
+      px-4
+      py-2
+      rounded-xl
+      font-bold
+      transition
+
+      ${filter === "favorites"
+        ? "bg-red-500 text-white"
+        : darkMode
+          ? "bg-zinc-800 text-white"
+          : "bg-white text-black"}
+    `}
+  >
+    ❤️ Favoritos
+  </button>
+
+  <button
+    onClick={() => setFilter("cheap")}
+    className={`
+      px-4
+      py-2
+      rounded-xl
+      font-bold
+      transition
+
+      ${filter === "cheap"
+        ? "bg-green-500 text-black"
+        : darkMode
+          ? "bg-zinc-800 text-white"
+          : "bg-white text-black"}
+    `}
+  >
+    💸 Económicos
+  </button>
+
+  <button
+    onClick={() => setFilter("expensive")}
+    className={`
+      px-4
+      py-2
+      rounded-xl
+      font-bold
+      transition
+
+      ${filter === "expensive"
+        ? "bg-yellow-500 text-black"
+        : darkMode
+          ? "bg-zinc-800 text-white"
+          : "bg-white text-black"}
+    `}
+  >
+    👑 Premium
+  </button>
+
+</div>
 
   <input
     type="text"
