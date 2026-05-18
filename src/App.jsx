@@ -21,6 +21,8 @@ import m19 from "./assets/M19.png";
 import m20 from "./assets/M20.png";
 import m88 from "./assets/M88.png";
 import logo from "./assets/logo.png";
+import {useEffect} from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const products = [
   {
@@ -180,32 +182,59 @@ const products = [
 ];
 
 
-function ProductCard({ product, darkMode, addToCart }) {
+function ProductCard({ product, darkMode, addToCart, setSelectedProduct }) {
 
   const mayorPrice = product.wholesalePrice;
 const unitPrice = product.unitPrice;
 
   return (
     <div
+      onClick={() => setSelectedProduct(product)}
       className={`
-      rounded-2xl
-      overflow-hidden
-      shadow-md
-      hover:shadow-xl
-      transition-all
-      duration-300
+        relative cursor-pointer
+        rounded-2xl
+        overflow-hidden
+        shadow-md
+        hover:-translate-y-1
+        hover:shadow-2xl
+        transition-all
+        duration-300
 
-      ${darkMode
-        ? "bg-zinc-900"
-        : "bg-white"}
-    `}
+        ${darkMode
+          ? "bg-zinc-900"
+          : "bg-white"}
+      `}
     >
+      
 
       <div className={darkMode ? "bg-zinc-800" : "bg-gray-100"}>
+        <div className="absolute top-3 left-3 z-10">
+
+  <span
+    className="
+      bg-red-500
+      text-white
+      text-xs
+      px-3
+      py-1
+      rounded-full
+      font-bold
+      shadow-lg
+    "
+  >
+    🔥 Viral
+  </span>
+
+</div>
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-56 object-cover"
+          className="
+            w-full h-56 object-cover
+            hover:scale-105
+            transition-transform duration-300
+          "
+          loading="lazy"
         />
       </div>
 
@@ -259,7 +288,10 @@ const unitPrice = product.unitPrice;
 
 
         <button
-  onClick={() => addToCart(product)}
+  onClick={(e) => {
+  e.stopPropagation();
+  addToCart(product);
+}}
   className="
   mt-4
   w-full
@@ -285,8 +317,17 @@ import { useState } from "react";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+
+  const savedCart = localStorage.getItem("cart");
+
+  return savedCart
+    ? JSON.parse(savedCart)
+    : [];
+
+});
   const [openCart, setOpenCart] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const addToCart = (product) => {
 
   const existingProduct = cart.find(
@@ -317,7 +358,54 @@ export default function App() {
     ]);
 
   }
+  toast.success("Producto agregado 😎");
 };
+
+const increaseQuantity = (productName) => {
+
+  setCart(
+    cart.map((item) =>
+      item.name === productName
+        ? {
+            ...item,
+            quantity: item.quantity + 1,
+          }
+        : item
+    )
+  );
+
+};
+
+const decreaseQuantity = (productName) => {
+
+  const updatedCart = cart
+    .map((item) => {
+
+      if (item.name === productName) {
+
+        return {
+          ...item,
+          quantity: item.quantity - 1,
+        };
+
+      }
+
+      return item;
+
+    })
+    .filter((item) => item.quantity > 0);
+
+  setCart(updatedCart);
+
+};
+  useEffect(() => {
+
+  localStorage.setItem(
+    "cart",
+    JSON.stringify(cart)
+  );
+
+}, [cart]);
   const removeFromCart = (indexToRemove) => {
 
   const updatedCart = [...cart];
@@ -334,15 +422,24 @@ export default function App() {
 
   setCart(updatedCart);
 };
+const cartCount = cart.reduce(
+  (acc, item) => acc + item.quantity,
+  0
+);
   const [search, setSearch] = useState("");
   const filteredProducts = products.filter((product) =>
   product.name.toLowerCase().includes(search.toLowerCase())
 );
-  const total = cart.reduce(
-  (acc, product) =>
-    acc + (product.unitPrice * product.quantity),
-  0
-);
+  const total = cart.reduce((acc, product) => {
+
+  const price =
+    product.quantity >= 3
+      ? product.wholesalePrice
+      : product.unitPrice;
+
+  return acc + (price * product.quantity);
+
+}, 0);
   return (
   <div
   className={
@@ -351,17 +448,19 @@ export default function App() {
       : "min-h-screen bg-gray-100"
   }
 >
+<Toaster position="top-right" />  
       
       <header
   className={`
   sticky top-0 z-50 shadow-sm
+  
 
   ${darkMode
     ? "bg-zinc-950"
     : "bg-white"}
 `}
 >
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap">
           
          <img
   src={logo}
@@ -375,7 +474,7 @@ export default function App() {
   "
 />
 
-          <div className="flex gap-3">
+          <div className="flex gap-2">
 
             <button
               onClick={() => setOpenCart(true)}
@@ -390,7 +489,7 @@ export default function App() {
               transition
               "
             >
-            🛒 {cart.length}
+            🛒 {cartCount}
             </button>
 
   <button
@@ -502,27 +601,61 @@ export default function App() {
 
 </section>
 
-      <section id="catalogo" className="max-w-7xl mx-auto px-6 py-10"/>
-        <section className="max-w-7xl mx-auto px-6 py-10">
+      <section
+  id="catalogo"
+  className="max-w-7xl mx-auto px-6 py-10"
+>
 
-        <div className="mb-10">
-          <input
-  type="text"
-  placeholder="Buscar producto..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-/>
-        </div>
+        
+          <div className="mb-10 relative">
+
+  <input
+    type="text"
+    placeholder="Buscar productos..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className={`
+      w-full
+      rounded-2xl
+      px-5
+      py-4
+      outline-none
+      border
+      transition-all
+      duration-300
+      shadow-sm
+
+      ${darkMode
+        ? `
+          bg-zinc-900
+          border-zinc-700
+          text-white
+          placeholder:text-gray-500
+          focus:border-green-500
+        `
+        : `
+          bg-white
+          border-gray-300
+          text-black
+          placeholder:text-gray-400
+          focus:border-green-500
+        `}
+    `}
+  />
+
+</div>
+        
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
           {filteredProducts.map((product, index) => (
             <ProductCard
-  key={index}
-  product={product}
-  darkMode={darkMode}
-  addToCart={addToCart}
-/>
+              key={index}
+              product={product}
+              darkMode={darkMode}
+              addToCart={addToCart}
+              setSelectedProduct={setSelectedProduct}
+            />
           ))}
 
         </div>
@@ -536,12 +669,13 @@ export default function App() {
       bg-black/50
       flex justify-center items-center
       z-50
+      p-4
     "
     >
 
       <div
         className={`
-        w-[90%] max-w-lg
+        w-full max-w-lg
         rounded-3xl
         p-6
         shadow-2xl
@@ -576,8 +710,13 @@ export default function App() {
           ) : (
             cart.map((product, index) => {
 
-              const mayorPrice = product.wholesalePrice;
-              const unitPrice = product.unitPrice;
+              const price =
+                product.quantity >= 3
+                  ? product.wholesalePrice
+                  : product.unitPrice;
+
+              const subtotal =
+                price * product.quantity;
 
               return (
                 <div
@@ -592,108 +731,157 @@ export default function App() {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-20 h-20 object-cover rounded-xl"
+                    className="
+                    w-20
+                    h-20
+                    object-cover
+                    rounded-xl
+                    
+                  "
                   />
 
                   <div className="flex-1">
 
-  <h3 className="font-bold">
-    {product.name}
-  </h3>
+                    <h3 className="font-bold">
+                      {product.name}
+                    </h3>
 
-  <p className="text-green-500">
-    Q{product.unitPrice} x {product.quantity}
-  </p>
-  <p className="text-sm opacity-70">
-    Subtotal: Q{product.unitPrice * product.quantity}
-  </p>
+                    <p className="text-green-500">
+                      Q{price} x {product.quantity}
+                    </p>
+
+                    <p className="text-sm opacity-70">
+                      Subtotal: Q{subtotal}
+                    </p>
+
+                  </div>
+
+                  <div
+  className="
+  flex items-center gap-2
+"
+>
+
+  <button
+    onClick={() =>
+      decreaseQuantity(product.name)
+    }
+    className="
+    w-8
+    h-8
+    rounded-lg
+    bg-red-500
+    hover:bg-red-400
+    text-white
+    font-bold
+    transition
+  "
+  >
+    -
+  </button>
+
+  <span className="font-bold w-6 text-center">
+    {product.quantity}
+  </span>
+
+  <button
+    onClick={() =>
+      increaseQuantity(product.name)
+    }
+    className="
+    w-8
+    h-8
+    rounded-lg
+    bg-green-500
+    hover:bg-green-400
+    text-black
+    font-bold
+    transition
+  "
+  >
+    +
+  </button>
 
 </div>
 
-<button
-  onClick={() => removeFromCart(index)}
-  className="
-  bg-red-500
-  hover:bg-red-400
-  text-white
-  px-3
-  py-2
-  rounded-xl
-  transition
-"
->
-  ✕
-</button>
                 </div>
               );
             })
           )}
 
         </div>
+
         <div
-  className="
-  mt-6
-  flex justify-between items-center
-  border-t border-white/10
-  pt-4
-"
->
+          className="
+          mt-6
+          flex justify-between items-center
+          border-t border-white/10
+          pt-4
+        "
+        >
 
-  <span className="text-lg font-bold">
-    Total:
-  </span>
+          <span className="text-lg font-bold">
+            Total:
+          </span>
 
-  <span className="text-2xl font-black text-green-500">
-    Q{total}
-  </span>
+          <span className="text-2xl font-black text-green-500">
+            Q{total}
+          </span>
 
-</div>
+        </div>
 
         {
           cart.length > 0 && (
-            
-            
+
             <button
-            className="
-mt-6
-w-full
-bg-gradient-to-r
-from-green-500
-to-emerald-400
-hover:scale-[1.02]
-hover:shadow-lg
-hover:shadow-green-500/30
-text-black
-py-3
-rounded-2xl
-font-black
-tracking-wide
-transition-all
-duration-300
-"
-  onClick={() => {
+              className="
+              mt-6
+              w-full
+              bg-gradient-to-r
+              from-green-500
+              to-emerald-400
+              hover:scale-[1.02]
+              hover:shadow-lg
+              hover:shadow-green-500/30
+              text-black
+              py-3
+              rounded-2xl
+              font-black
+              tracking-wide
+              transition-all
+              duration-300
+            "
+              onClick={() => {
 
-    const message = cart
-  .map(
-    (product) =>
-      `${product.name} x${product.quantity} - Q${
-        product.unitPrice * product.quantity
-      }`
-  )
-  .join("%0A");
-  const finalMessage =
-  `${message}%0A%0ATotal: Q${total}`;
+                const message = cart
+                  .map((product) => {
 
-    window.open(
-  `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${finalMessage}`,
-  "_blank"
-);
-    
-  }}
-  
->
-  Confirmar pedido
-</button>
+                    const price =
+                      product.quantity >= 3
+                        ? product.wholesalePrice
+                        : product.unitPrice;
+
+                    return (
+                      `${product.name} x${product.quantity} - Q${
+                        price * product.quantity
+                      }`
+                    );
+
+                  })
+                  .join("%0A");
+
+                const finalMessage =
+                  `${message}%0A%0ATotal: Q${total}`;
+
+                window.open(
+                  `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${finalMessage}`,
+                  "_blank"
+                );
+
+              }}
+            >
+              Confirmar pedido
+            </button>
 
           )
         }
@@ -703,6 +891,185 @@ duration-300
     </div>
   )
 }
+
+{
+  selectedProduct && (
+
+    <div
+      className="
+      fixed inset-0
+      bg-black/60
+      z-50
+      flex justify-center items-center
+      p-4
+    "
+      onClick={() => setSelectedProduct(null)}
+    >
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`
+        max-w-2xl
+        w-full
+        rounded-3xl
+        overflow-hidden
+        shadow-2xl
+
+        ${darkMode
+          ? "bg-zinc-900 text-white"
+          : "bg-white text-black"}
+      `}
+      >
+
+        <img
+          src={selectedProduct.image}
+          alt={selectedProduct.name}
+          className="
+          w-full
+          h-[300px] md:h-[400px]
+          object-cover
+        "
+        />
+
+        <div className="p-6">
+
+          <div className="flex justify-between items-start">
+
+            <h2 className="text-3xl font-black">
+              {selectedProduct.name}
+            </h2>
+
+            <button
+              onClick={() => setSelectedProduct(null)}
+              className="text-2xl"
+            >
+              ✕
+            </button>
+
+          </div>
+
+          <p
+            className={`
+            mt-4 text-lg
+
+            ${darkMode
+              ? "text-gray-300"
+              : "text-gray-600"}
+          `}
+          >
+            {selectedProduct.description}
+          </p>
+
+          <div className="mt-6 space-y-2">
+
+            <p className="text-green-500 text-2xl font-black">
+              A partir de 3: Q{selectedProduct.wholesalePrice}
+            </p>
+
+            <p
+              className={`
+              text-lg
+
+              ${darkMode
+                ? "text-gray-400"
+                : "text-gray-500"}
+            `}
+            >
+              Unidad: Q{selectedProduct.unitPrice}
+            </p>
+
+          </div>
+
+          <button
+            onClick={() => addToCart(selectedProduct)}
+            className="
+            mt-8
+            w-full
+            bg-green-500
+            hover:bg-green-400
+            text-black
+            py-4
+            rounded-2xl
+            font-black
+            transition
+          "
+          >
+            Agregar al carrito
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  )
+}
+      <footer
+  className={`
+    mt-20
+    border-t
+    py-10
+
+    ${darkMode
+      ? "border-zinc-800 bg-zinc-950 text-white"
+      : "border-gray-200 bg-white text-black"}
+  `}
+>
+
+  <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between gap-8">
+
+    <div>
+      <h2 className="text-2xl font-black">
+        NovaShop
+      </h2>
+
+      <p className="opacity-70 mt-2 max-w-sm">
+        Gadgets, accesorios y productos virales al mejor precio.
+      </p>
+    </div>
+
+    <div className="space-y-2">
+
+      <a
+        href="https://wa.me/50256981825"
+        target="_blank"
+        className="block hover:text-green-500 transition"
+      >
+        WhatsApp
+      </a>
+
+    </div>
+
+  </div>
+
+</footer>
+
+<a
+  href="https://wa.me/50256981825"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    fixed
+    bottom-5
+    right-5
+    z-50
+    bg-green-500
+    hover:bg-green-400
+    text-black
+    w-16
+    h-16
+    rounded-full
+    flex
+    items-center
+    justify-center
+    text-3xl
+    shadow-2xl
+    hover:scale-110
+    transition-all
+  "
+>
+  💬
+</a>
     </div>
   );
 }
