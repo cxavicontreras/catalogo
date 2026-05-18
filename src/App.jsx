@@ -363,27 +363,17 @@ export default function App() {
 >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
-          <div className="flex items-center gap-3">
-
-  <img
-    src={logo}
-    alt="NovaShop"
-    className="w-12 h-12 rounded-2xl"
-  />
-
-  <h1
-    className={`
-    text-2xl font-black tracking-wide
-
-    ${darkMode
-      ? "text-white"
-      : "text-black"}
-  `}
-  >
-    NovaShop
-  </h1>
-
-</div>
+         <img
+  src={logo}
+  alt="NovaShop"
+  className="
+    w-12
+    h-12
+    rounded-2xl
+    hover:scale-105
+    transition
+  "
+/>
 
           <div className="flex gap-3">
 
@@ -393,7 +383,7 @@ export default function App() {
             bg-black
             hover:bg-zinc-800
             text-white
-              px-4
+              px-3
               py-2
               rounded-2xl
               font-bold
@@ -409,7 +399,7 @@ export default function App() {
     bg-zinc-800
     hover:bg-zinc-700
     text-white
-    px-4
+    px-3
     py-2
     rounded-2xl
     font-bold
@@ -427,7 +417,7 @@ export default function App() {
     bg-green-500
     hover:bg-green-400
     text-black
-    px-5
+    px-3
     py-2
     rounded-2xl
     font-bold
