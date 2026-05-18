@@ -23,6 +23,7 @@ import m88 from "./assets/M88.png";
 import logo from "./assets/logo.png";
 import {useEffect} from "react";
 import toast, { Toaster } from "react-hot-toast";
+import {motion, AnimatePresence} from "framer-motion";
 
 const products = [
   {
@@ -182,29 +183,36 @@ const products = [
 ];
 
 
-function ProductCard({ product, darkMode, addToCart, setSelectedProduct }) {
+function ProductCard({ product, darkMode, addToCart, setSelectedProduct, favorites, toggleFavorite }) {
 
   const mayorPrice = product.wholesalePrice;
 const unitPrice = product.unitPrice;
 
   return (
-    <div
-      onClick={() => setSelectedProduct(product)}
-      className={`
-        relative cursor-pointer
-        rounded-2xl
-        overflow-hidden
-        shadow-md
-        hover:-translate-y-1
-        hover:shadow-2xl
-        transition-all
-        duration-300
+    <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}
+  whileHover={{ y: -5 }}
 
-        ${darkMode
-          ? "bg-zinc-900"
-          : "bg-white"}
-      `}
-    >
+  onClick={() => setSelectedProduct(product)}
+
+  className={`
+    relative
+    cursor-pointer
+    rounded-2xl
+    overflow-hidden
+    shadow-md
+    hover:-translate-y-1
+    hover:shadow-2xl
+    transition-all
+    duration-300
+
+    ${darkMode
+      ? "bg-zinc-900"
+      : "bg-white"}
+  `}
+>
       
 
       <div className={darkMode ? "bg-zinc-800" : "bg-gray-100"}>
@@ -224,8 +232,25 @@ const unitPrice = product.unitPrice;
   >
     🔥 Viral
   </span>
-
 </div>
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    toggleFavorite(product.name);
+  }}
+
+  className="
+    absolute
+    top-3
+    right-3
+    z-10
+    text-2xl
+  "
+>
+  {favorites.includes(product.name)
+    ? "❤️"
+    : "🤍"}
+</button>
         <img
           src={product.image}
           alt={product.name}
@@ -306,10 +331,34 @@ const unitPrice = product.unitPrice;
 >
   Agregar al carrito
 </button>
+<a
+  href={`https://wa.me/50256981825?text=Hola,%20quiero%20comprar:%20${product.name}`}
+
+  target="_blank"
+
+  onClick={(e) => e.stopPropagation()}
+
+  className="
+    mt-3
+    block
+    text-center
+    border
+    border-green-500
+    text-green-500
+    hover:bg-green-500
+    hover:text-black
+    py-2.5
+    rounded-xl
+    font-bold
+    transition
+  "
+>
+  Comprar ahora
+</a>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 import { useState } from "react";
@@ -328,6 +377,7 @@ export default function App() {
 });
   const [openCart, setOpenCart] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [favorites, setFavorites] = useState([]);
   const addToCart = (product) => {
 
   const existingProduct = cart.find(
@@ -406,6 +456,28 @@ const decreaseQuantity = (productName) => {
   );
 
 }, [cart]);
+
+const toggleFavorite = (productName) => {
+
+  if (favorites.includes(productName)) {
+
+    setFavorites(
+      favorites.filter(
+        (fav) => fav !== productName
+      )
+    );
+
+  } else {
+
+    setFavorites([
+      ...favorites,
+      productName
+    ]);
+
+  }
+
+};
+
   const removeFromCart = (indexToRemove) => {
 
   const updatedCart = [...cart];
@@ -456,8 +528,8 @@ const cartCount = cart.reduce(
   
 
   ${darkMode
-    ? "bg-zinc-950"
-    : "bg-white"}
+    ? "bg-zinc-950/70 backdrop-blur-xl"
+    : "bg-white/70 backdrop-blur-xl"}
 `}
 >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap">
@@ -646,10 +718,12 @@ const cartCount = cart.reduce(
 </div>
         
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
           {filteredProducts.map((product, index) => (
             <ProductCard
+              favorites={favorites}
+              toggleFavorite={toggleFavorite}
               key={index}
               product={product}
               darkMode={darkMode}
@@ -661,30 +735,41 @@ const cartCount = cart.reduce(
         </div>
 
       </section>
+      <AnimatePresence>
       {
   openCart && (
-    <div
+    <motion.div
+      onClick={() => setOpenCart(false)}
       className="
       fixed inset-0
       bg-black/50
-      flex justify-center items-center
+      flex justify-end
       z-50
       p-4
     "
     >
 
-      <div
-        className={`
-        w-full max-w-lg
-        rounded-3xl
-        p-6
-        shadow-2xl
+      <motion.div
+  initial={{ x: 400 }}
+  animate={{ x: 0 }}
+  exit={{ x: 400 }}
+  transition={{ duration: 0.25 }}
 
-        ${darkMode
-          ? "bg-zinc-900 text-white"
-          : "bg-white text-black"}
-      `}
-      >
+  onClick={(e) => e.stopPropagation()}
+
+  className={`
+    w-full
+    max-w-lg
+    h-full
+    rounded-none
+    p-6
+    shadow-2xl
+
+    ${darkMode
+      ? "bg-zinc-900 text-white"
+      : "bg-white text-black"}
+  `}
+>
 
         <div className="flex justify-between items-center mb-6">
 
@@ -886,28 +971,39 @@ const cartCount = cart.reduce(
           )
         }
 
-      </div>
+      </motion.div>
 
-    </div>
+    </motion.div>
   )
 }
-
+</AnimatePresence>
+<AnimatePresence>
 {
   selectedProduct && (
 
-    <div
-      className="
-      fixed inset-0
-      bg-black/60
-      z-50
-      flex justify-center items-center
-      p-4
-    "
-      onClick={() => setSelectedProduct(null)}
-    >
+    <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
 
-      <div
-        onClick={(e) => e.stopPropagation()}
+  className="
+    fixed inset-0
+    bg-black/60
+    z-50
+    flex justify-center items-center
+    p-4
+  "
+
+  onClick={() => setSelectedProduct(null)}
+>
+
+      <motion.div
+  initial={{ scale: 0.9, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  exit={{ scale: 0.9, opacity: 0 }}
+  transition={{ duration: 0.2 }}
+
+  onClick={(e) => e.stopPropagation()}
         className={`
         max-w-2xl
         w-full
@@ -999,11 +1095,12 @@ const cartCount = cart.reduce(
 
         </div>
 
-      </div>
+      </motion.div>
 
-    </div>
+    </motion.div>
   )
 }
+</AnimatePresence>
       <footer
   className={`
     mt-20
@@ -1011,8 +1108,8 @@ const cartCount = cart.reduce(
     py-10
 
     ${darkMode
-      ? "border-zinc-800 bg-zinc-950 text-white"
-      : "border-gray-200 bg-white text-black"}
+  ? "border-zinc-800 bg-zinc-950/70 backdrop-blur-xl text-white"
+  : "border-gray-200 bg-white/70 backdrop-blur-xl backdrop-blur-xl text-black"}
   `}
 >
 
