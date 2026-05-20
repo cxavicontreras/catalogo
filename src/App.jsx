@@ -21,6 +21,16 @@ import m19 from "./assets/M19.png";
 import m20 from "./assets/M20.png";
 import m88 from "./assets/M88.png";
 import logo from "./assets/logo.png";
+import icono from "./assets/icon.png";
+import sport from "./assets/sport.png"
+import wificam from "./assets/wificam.png";
+import mousepadS from "./assets/mousepadS.png";
+import mousepadXL from "./assets/mousepadXL.png";
+import M25 from "./assets/M25.png";
+import B39 from "./assets/B39.png";
+import laser from "./assets/laser.png";
+import tripode from "./assets/tripode.png";
+import miniventilador from "./assets/miniventilador.png";
 import {useEffect} from "react";
 import toast, { Toaster } from "react-hot-toast";
 import {motion, AnimatePresence} from "framer-motion";
@@ -174,11 +184,74 @@ const products = [
     description: "Audífonos M20 con cancelación de ruido y estuche con indicador digital."
   },
   {
+    name: "Audífonos M25 Gamer",
+    wholesalePrice: 90,
+    unitPrice: 99,
+    image: M25,
+    description: "Audífonos inalámbricos gamer con diseño futurista, pantalla LED y excelente calidad de sonido para música y videojuegos."
+  },
+  {
     name: "Audífonos M88 Plus Power Bank",
     wholesalePrice: 118,
     unitPrice: 125,
     image: m88,
     description: "Audífonos M88 Plus con función power bank y batería de larga duración."
+  },
+  {
+    name: "Mini Cámara WiFi",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: wificam,
+    description: "Mini cámara de seguridad WiFi con visión nocturna, detector de movimiento y monitoreo desde celular. Compacta, discreta y recargable."
+  },
+  {
+    name: "Cámara Deportiva",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: sport,
+    description: "Cámara deportiva HD 1080P ideal para bicicleta, moto y aventuras. Incluye accesorios de montaje y carcasa resistente al agua."
+  },
+  {
+    name: "Mouse Pad RGB S",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: mousepadS,
+    description: "Mouse pad gamer compacto con iluminación RGB y superficie suave de alta precisión. Disponible en varios diseños espaciales."
+  },
+  {
+    name: "Mouse Pad RGB XL",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: mousepadXL,
+    description: "Mouse pad gamer XL con iluminación RGB y amplio espacio para teclado y mouse. Perfecto para setups gaming modernos."
+  },
+  {
+    name: "Audífonos Bluetooth B39",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: B39,
+    description: "Audífonos Bluetooth plegables con luces RGB, sonido envolvente y batería de larga duración. Cómodos y modernos."
+  },
+  {
+    name: "Metro Digital Laser",
+    wholesalePrice: 118,
+    unitPrice: 125,
+    image: laser,
+    description: "Medidor digital láser de alta precisión para medir distancias, áreas y volúmenes. Ideal para construcción y hogar."
+  },
+  {
+    name: "Mini Tripode Selfie",
+    wholesalePrice: 90,
+    unitPrice: 99,
+    image: tripode,
+    description: "Trípode selfie portátil con luz LED recargable y control remoto. Perfecto para TikTok, selfies y creación de contenido."
+  },
+  {
+    name: "Mini Ventilador Portátil",
+    wholesalePrice: 90,
+    unitPrice: 99,
+    image: miniventilador,
+    description: "Ventilador portátil recargable con pantalla digital de batería y múltiples velocidades. Compacto y potente."
   },
 ];
 
@@ -332,7 +405,7 @@ const unitPrice = product.unitPrice;
   Agregar al carrito
 </button>
 <a
-  href={`https://wa.me/50256981825?text=Hola,%20quiero%20comprar:%20${product.name}`}
+  href={`https://wa.me/50242104096?text=Hola,%20quiero%20comprar:%20${product.name}`}
 
   target="_blank"
 
@@ -588,7 +661,7 @@ const cartCount = cart.reduce(
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap">
           
          <img
-  src={logo}
+  src={icono}
   alt="NovaShop"
   className="
     w-12
@@ -634,7 +707,7 @@ const cartCount = cart.reduce(
   </button>
 
   <a
-  href="https://wa.me/50256981825"
+  href="https://wa.me/50242104096"
   target="_blank"
   rel="noopener noreferrer"
   className="
@@ -1091,7 +1164,7 @@ const cartCount = cart.reduce(
                   `${message}%0A%0ATotal: Q${total}`;
 
                 window.open(
-                  `https://wa.me/50256981825?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${finalMessage}`,
+                  `https://wa.me/50242104096?text=Hola,%20quiero%20hacer%20este%20pedido:%0A${finalMessage}`,
                   "_blank"
                 );
 
@@ -1260,7 +1333,7 @@ const cartCount = cart.reduce(
     <div className="space-y-2">
 
       <a
-        href="https://wa.me/50256981825"
+        href="https://wa.me/50242104096"
         target="_blank"
         className="block hover:text-green-500 transition"
       >
@@ -1274,7 +1347,7 @@ const cartCount = cart.reduce(
 </footer>
 
 <a
-  href="https://wa.me/50256981825"
+  href="https://wa.me/50242104096"
   target="_blank"
   rel="noopener noreferrer"
   className="
