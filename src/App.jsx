@@ -266,11 +266,16 @@ const unitPrice = product.unitPrice;
   initial={{ opacity: 0, y: 20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.3 }}
-  whileHover={{ y: -5 }}
+  whileHover={{
+    y: -8,
+    scale: 1.02,
+  }}
+  whileTap={{ scale: 0.98 }}
 
   onClick={() => setSelectedProduct(product)}
 
   className={`
+    group
     relative
     cursor-pointer
     rounded-2xl
@@ -314,10 +319,12 @@ const unitPrice = product.unitPrice;
 
   className="
     absolute
+    cursor-pointer
     top-3
     right-3
     z-10
     text-2xl
+    active:scale-95
   "
 >
   {favorites.includes(product.name)
@@ -329,10 +336,23 @@ const unitPrice = product.unitPrice;
           alt={product.name}
           className="
             w-full h-56 object-cover
-            hover:scale-105
+            group-hover:scale-105
             transition-transform duration-300
+            active:scale-95
           "
           loading="lazy"
+        />
+
+        <div
+          className="
+          absolute
+          inset-0
+          pointer-events-none
+          bg-black/0
+        group-hover:bg-black/10
+          transition
+          duration-300
+          "
         />
       </div>
 
@@ -400,6 +420,7 @@ const unitPrice = product.unitPrice;
   rounded-xl
   font-bold
   transition
+  active:scale-95
 "
 >
   Agregar al carrito
@@ -424,6 +445,7 @@ const unitPrice = product.unitPrice;
     rounded-xl
     font-bold
     transition
+    active:scale-95
   "
 >
   Comprar ahora
@@ -490,7 +512,14 @@ export default function App() {
     ]);
 
   }
-  toast.success("Producto agregado 😎");
+  toast.success("Producto agregado 😎", {
+  style: {
+    borderRadius: "16px",
+    background: "#18181b",
+    color: "#fff",
+    padding: "16px",
+  },
+});
 };
 
 const increaseQuantity = (productName) => {
@@ -658,7 +687,7 @@ const cartCount = cart.reduce(
     : "bg-white/70 backdrop-blur-xl"}
 `}
 >
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center flex-wrap">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
           
          <img
   src={icono}
@@ -674,39 +703,45 @@ const cartCount = cart.reduce(
 
           <div className="flex gap-2">
 
-            <button
+            <motion.button
               onClick={() => setOpenCart(true)}
               className="
-            bg-black
-            hover:bg-zinc-800
-            text-white
-              px-3
-              py-2
-              rounded-2xl
-              font-bold
-              transition
-              "
+              bg-black
+              hover:bg-zinc-800
+              text-white
+                px-3
+                py-2
+                rounded-2xl
+                font-bold
+                transition
+                active:scale-95
+                "
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
             >
-            🛒 {cartCount}
-            </button>
+              🛒 {cartCount}
+            </motion.button>
 
-  <button
+  <motion.button
     onClick={() => setDarkMode(!darkMode)}
+    whileTap={{ scale: 0.9 }}
+    whileHover={{ scale: 1.05 }}
     className="
-    bg-zinc-800
-    hover:bg-zinc-700
-    text-white
-    px-3
-    py-2
-    rounded-2xl
-    font-bold
-    transition
-  "
+      bg-zinc-800
+      hover:bg-zinc-700
+      text-white
+      px-3
+      py-2
+      rounded-2xl
+      font-bold
+      transition
+      active:scale-95
+    "
   >
     {darkMode ? "☀️" : "🌙"}
-  </button>
+  </motion.button>
 
-  <a
+  <motion.a
   href="https://wa.me/50242104096"
   target="_blank"
   rel="noopener noreferrer"
@@ -719,10 +754,19 @@ const cartCount = cart.reduce(
     rounded-2xl
     font-bold
     transition
+    active:scale-95
   "
+  animate={{
+      y: [0, -8, 0],
+    }}
+
+    transition={{
+      repeat: Infinity,
+      duration: 2,
+    }}
 >
   WhatsApp
-</a>
+</motion.a>
 
 </div>
 
@@ -731,24 +775,93 @@ const cartCount = cart.reduce(
 
       <section className="max-w-7xl mx-auto px-6 pt-16 pb-10">
 
-        <div
-        className="
-        rounded-[40px]
-        overflow-hidden
-        relative
-        bg-gradient-to-r
-        from-green-500
-        via-emerald-400
-        to-lime-300
-        p-10
-        md:p-16
-        shadow-2xl
-      "
+        
+
+        <motion.div
+
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+
+  transition={{
+    duration: 0.7,
+    ease: "easeOut",
+  }}
+
+  className={`
+  rounded-[40px]
+  overflow-hidden
+  relative
+  p-10
+  md:p-16
+  shadow-2xl
+  transition-all
+  duration-500
+
+  ${darkMode
+    ? `
+      bg-gradient-to-br
+      from-zinc-900
+      via-zinc-950
+      to-black
+      border
+      border-zinc-800
+    `
+    : `
+      bg-gradient-to-br
+      from-green-500
+      via-emerald-400
+      to-lime-300
+    `}
+`}
       >
 
-      <div className="max-w-2xl">
+        <div
+  className={`
+    absolute
+    top-0
+    right-0
+    z-0
+    pointer-events-none
+    w-72
+    h-72
+    blur-3xl
+    rounded-full
 
-      <p className="uppercase tracking-[5px] text-black/70 font-bold mb-4">
+    ${darkMode
+      ? "bg-emerald-500/20"
+      : "bg-white/20"}
+  `}
+/>
+
+<div
+  className={`
+    absolute
+    bottom-0
+    left-0
+    z-0
+    pointer-events-none
+    w-72
+    h-72
+    blur-3xl
+    rounded-full
+
+    ${darkMode
+      ? "bg-green-500/20"
+      : "bg-lime-300/20"}
+  `}
+/>
+
+      <div className="max-w-2xl relative z-10">
+
+      <p className={`
+        uppercase
+        tracking-[5px] 
+        ${darkMode
+          ?"text-white"
+          :"text-black/70"
+        } 
+        font-bold 
+        mb-4`}>
         Productos virales
       </p>
 
@@ -778,24 +891,35 @@ const cartCount = cart.reduce(
 
       <a
   href="#catalogo"
-  className="
-  inline-block
-  mt-8
-  bg-black
-  text-white
-  px-8
-  py-4
-  rounded-2xl
-  font-bold
-  hover:scale-105
-  transition
-"
+
+  className={`
+    inline-block
+    mt-8
+    px-8
+    py-4
+    rounded-2xl
+    font-bold
+    hover:scale-105
+    active:scale-95
+    transition
+
+    ${darkMode
+      ? `
+        bg-green-500
+        text-black
+        hover:bg-green-400
+      `
+      : `
+        bg-black
+        text-white
+      `}
+  `}
 >
   Ver catálogo
 </a>
     </div>
 
-  </div>
+  </motion.div>
 
 </section>
 
@@ -816,6 +940,7 @@ const cartCount = cart.reduce(
       rounded-xl
       font-bold
       transition
+      active:scale-95
 
       ${filter === "all"
         ? "bg-green-500 text-black"
@@ -835,6 +960,7 @@ const cartCount = cart.reduce(
       rounded-xl
       font-bold
       transition
+      active:scale-95
 
       ${filter === "favorites"
         ? "bg-red-500 text-white"
@@ -854,6 +980,7 @@ const cartCount = cart.reduce(
       rounded-xl
       font-bold
       transition
+      active:scale-95
 
       ${filter === "cheap"
         ? "bg-green-500 text-black"
@@ -873,6 +1000,7 @@ const cartCount = cart.reduce(
       rounded-xl
       font-bold
       transition
+      active:scale-95
 
       ${filter === "expensive"
         ? "bg-yellow-500 text-black"
@@ -886,44 +1014,89 @@ const cartCount = cart.reduce(
 
 </div>
 
+  <div className="relative">
+
+  <span
+    className="
+      absolute
+      left-4
+      top-1/2
+      -translate-y-1/2
+      text-gray-400
+      text-lg
+    "
+  >
+    🔍
+  </span>
+
   <input
     type="text"
     placeholder="Buscar productos..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
+
     className={`
       w-full
-      rounded-2xl
-      px-5
+      pl-12
+      pr-5
       py-4
+      rounded-2xl
       outline-none
       border
       transition-all
       duration-300
-      shadow-sm
+      shadow-lg
+      backdrop-blur-xl
 
       ${darkMode
         ? `
-          bg-zinc-900
+          bg-zinc-900/70
           border-zinc-700
           text-white
           placeholder:text-gray-500
           focus:border-green-500
+          focus:ring-2
+          focus:ring-green-500/30
         `
         : `
-          bg-white
+          bg-white/70
           border-gray-300
           text-black
           placeholder:text-gray-400
           focus:border-green-500
+          focus:ring-2
+          focus:ring-green-500/30
         `}
     `}
   />
 
 </div>
+
+</div>
         
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <motion.div
+  initial="hidden"
+  animate="show"
+
+  variants={{
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  }}
+
+  className="
+    grid
+    grid-cols-1
+    sm:grid-cols-2
+    md:grid-cols-3
+    lg:grid-cols-4
+    gap-6
+  "
+>
 
           {filteredProducts.map((product, index) => (
             <ProductCard
@@ -937,7 +1110,7 @@ const cartCount = cart.reduce(
             />
           ))}
 
-        </div>
+        </motion.div>
 
       </section>
       <AnimatePresence>
@@ -984,7 +1157,7 @@ const cartCount = cart.reduce(
 
           <button
             onClick={() => setOpenCart(false)}
-            className="text-2xl"
+            className="text-2xl active:scale-95"
           >
             ✕
           </button>
@@ -1030,6 +1203,8 @@ const cartCount = cart.reduce(
                   "
                   />
 
+                  
+
                   <div className="flex-1">
 
                     <h3 className="font-bold">
@@ -1065,6 +1240,7 @@ const cartCount = cart.reduce(
     text-white
     font-bold
     transition
+    active:scale-95
   "
   >
     -
@@ -1087,6 +1263,7 @@ const cartCount = cart.reduce(
     text-black
     font-bold
     transition
+    active:scale-95
   "
   >
     +
@@ -1140,6 +1317,7 @@ const cartCount = cart.reduce(
               tracking-wide
               transition-all
               duration-300
+              active:scale-95
             "
               onClick={() => {
 
@@ -1203,8 +1381,8 @@ const cartCount = cart.reduce(
 >
 
       <motion.div
-  initial={{ scale: 0.9, opacity: 0 }}
-  animate={{ scale: 1, opacity: 1 }}
+  initial={{ scale: 0.9, opacity: 0, y: 30 }}
+  animate={{ scale: 1, opacity: 1, y: 0 }}
   exit={{ scale: 0.9, opacity: 0 }}
   transition={{ duration: 0.2 }}
 
@@ -1242,7 +1420,7 @@ const cartCount = cart.reduce(
 
             <button
               onClick={() => setSelectedProduct(null)}
-              className="text-2xl"
+              className="text-2xl active:scale-95"
             >
               ✕
             </button>
@@ -1293,6 +1471,7 @@ const cartCount = cart.reduce(
             rounded-2xl
             font-black
             transition
+            active:scale-95
           "
           >
             Agregar al carrito
@@ -1306,6 +1485,56 @@ const cartCount = cart.reduce(
   )
 }
 </AnimatePresence>
+{
+  cart.length > 0 && (
+
+    <div
+      className="
+        fixed
+        bottom-5
+        left-1/2
+        -translate-x-1/2
+        md:hidden
+        z-40
+        bg-black
+        text-white
+        px-6
+        py-3
+        rounded-full
+        shadow-2xl
+        flex
+        items-center
+        gap-4
+      "
+    >
+
+      <span className="font-bold">
+        🛒 {cartCount}
+      </span>
+
+      <span className="text-green-400 font-black">
+        Q{total}
+      </span>
+
+      <button
+        onClick={() => setOpenCart(true)}
+        className="
+          bg-green-500
+          text-black
+          px-4
+          py-1
+          rounded-full
+          font-bold
+          active:scale-95
+        "
+      >
+        Ver
+      </button>
+
+    </div>
+
+  )
+}
       <footer
   className={`
     mt-20
@@ -1314,7 +1543,7 @@ const cartCount = cart.reduce(
 
     ${darkMode
   ? "border-zinc-800 bg-zinc-950/70 backdrop-blur-xl text-white"
-  : "border-gray-200 bg-white/70 backdrop-blur-xl backdrop-blur-xl text-black"}
+  : "border-gray-200 bg-white/70 backdrop-blur-xl  text-black"}
   `}
 >
 
