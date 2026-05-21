@@ -716,6 +716,14 @@ const cartCount = cart.reduce(
                 transition
                 active:scale-95
                 "
+                animate={{
+                  y: [0, -8, 0],
+                }}
+
+                transition={{
+                  repeat: Infinity,
+                  duration: 2,
+                }}
                 whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.05 }}
             >
@@ -737,6 +745,14 @@ const cartCount = cart.reduce(
       transition
       active:scale-95
     "
+    animate={{
+      y: [-8, 0, -8],
+    }}
+
+    transition={{
+      repeat: Infinity,
+      duration: 2,
+    }}
   >
     {darkMode ? "☀️" : "🌙"}
   </motion.button>
