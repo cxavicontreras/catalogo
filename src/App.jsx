@@ -185,8 +185,8 @@ const products = [
   },
   {
     name: "Audífonos M25 Gamer",
-    wholesalePrice: 90,
-    unitPrice: 99,
+    wholesalePrice: 50,
+    unitPrice: 75,
     image: M25,
     description: "Audífonos inalámbricos gamer con diseño futurista, pantalla LED y excelente calidad de sonido para música y videojuegos."
   },
@@ -199,57 +199,57 @@ const products = [
   },
   {
     name: "Mini Cámara WiFi",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 92,
+    unitPrice: 99,
     image: wificam,
     description: "Mini cámara de seguridad WiFi con visión nocturna, detector de movimiento y monitoreo desde celular. Compacta, discreta y recargable."
   },
   {
     name: "Cámara Deportiva",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 92,
+    unitPrice: 99,
     image: sport,
     description: "Cámara deportiva HD 1080P ideal para bicicleta, moto y aventuras. Incluye accesorios de montaje y carcasa resistente al agua."
   },
   {
     name: "Mouse Pad RGB S",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 28,
+    unitPrice: 30,
     image: mousepadS,
     description: "Mouse pad gamer compacto con iluminación RGB y superficie suave de alta precisión. Disponible en varios diseños espaciales."
   },
   {
     name: "Mouse Pad RGB XL",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 38,
+    unitPrice: 40,
     image: mousepadXL,
     description: "Mouse pad gamer XL con iluminación RGB y amplio espacio para teclado y mouse. Perfecto para setups gaming modernos."
   },
   {
     name: "Audífonos Bluetooth B39",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 45,
+    unitPrice: 50,
     image: B39,
     description: "Audífonos Bluetooth plegables con luces RGB, sonido envolvente y batería de larga duración. Cómodos y modernos."
   },
   {
     name: "Metro Digital Laser",
-    wholesalePrice: 118,
-    unitPrice: 125,
+    wholesalePrice: 168,
+    unitPrice: 175,
     image: laser,
     description: "Medidor digital láser de alta precisión para medir distancias, áreas y volúmenes. Ideal para construcción y hogar."
   },
   {
     name: "Mini Tripode Selfie",
-    wholesalePrice: 90,
-    unitPrice: 99,
+    wholesalePrice: 30,
+    unitPrice: 35,
     image: tripode,
     description: "Trípode selfie portátil con luz LED recargable y control remoto. Perfecto para TikTok, selfies y creación de contenido."
   },
   {
     name: "Mini Ventilador Portátil",
-    wholesalePrice: 90,
-    unitPrice: 99,
+    wholesalePrice: 45,
+    unitPrice: 50,
     image: miniventilador,
     description: "Ventilador portátil recargable con pantalla digital de batería y múltiples velocidades. Compacto y potente."
   },
